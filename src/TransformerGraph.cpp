@@ -482,6 +482,10 @@ bool TransformerGraph::setTransformation(osg::Node &transformer,const std::strin
 
         if (target->getParent(0) != &transformer)
         {
+            std::clog << "Ignoring " << source_frame << " --> " << target_frame << " because of there exists another transform with the same target frame: " <<
+                         target->getParent(0)->getName() << " --> " << target_frame << std::endl;
+            return true;
+            /*
             std::set<osg::Node*> ancestors;
             osg::ref_ptr<osg::Node> sourceAncestor = source;
             while (sourceAncestor != &transformer)
@@ -497,9 +501,8 @@ bool TransformerGraph::setTransformation(osg::Node &transformer,const std::strin
                 else
                     sourceAncestor = sourceAncestor->getParent(0);
             }
-
             ::makeRoot(transformer, getTransform(target), ancestors);
-
+            */
         }
 
 	osg::ref_ptr<osg::Node> node = target; //insures that node is not deleted
